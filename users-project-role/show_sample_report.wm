@@ -1,0 +1,46 @@
+##-----  Main   ---------------------------------------------------------------
+<div class="container">
+	<div class="my_title">$PRB.getString("sample.report.user.proj.role")</div>
+	<div class="settings">
+		<form>
+		<table class="topic_table" cellspacing="1" cellpadding="0" border="0" width="80%">
+	        <tr>
+	            ## User ID
+	            <th>$RB.getString("wm.label.user_id")</th>
+	            ## User Name
+	            <th>$RB.getString("wm.label.user_name")</th>
+	            ## Project Name
+	            <th>$RB.getString("wm.label.proj_name")</th>
+	            ## Project Owner
+	            <th>$RB.getString("wm.label.proj_owner")</th>
+	            ## Project Role
+	            <th>$RB.getString("wm.label.proj_role")</th>
+	        </tr>
+	        #alternate $spn through ["td_content1", "td_content2"]
+	        #foreach $user in $allUsers {
+	        	#set $userKey = $user.getKey()
+	        	#set $rows = $userKeyToProjData.get($userKey).size()
+
+	        	#set $count = 0
+	        	#foreach $projData in $userKeyToProjData.get($userKey) {
+		            <tr class="$spn">
+			            #if ($count == 0) {
+			            	## User ID
+			                <td rowspan="$rows" align="left" valign="top">$user.getId()</td>
+			                ## User Name
+			                <td rowspan="$rows" align="left" valign="top">$user.getName()</td>
+			            }		            	
+		                ## Project Name
+		                <td align="left" valign="center">$projData.getProjectName()</td>
+		                ## Project Owner
+		                <td align="center" valign="center">$projData.getProjectOwnerName()</td>
+		                ## Project Role
+		                <td align="center" valign="center">$projData.getProjRoleName()</td>
+		            </tr>
+		            #set $count = $count + 1
+		        }
+	        }
+	    </table>
+		</form>
+	</div>
+</div>
