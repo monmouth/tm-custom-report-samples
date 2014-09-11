@@ -1,0 +1,80 @@
+<project xmlns:ivy="antlib:org.apache.ivy.ant"
+        name="export-users-project-role" default="archive" basedir=".">
+    <description>
+        Ant build file for export-users-project-role:
+
+        Primary targets :
+        - clean : clean up all left-over build directories/files
+        - compile : compile source
+        - doc : generate javadoc
+        - archive : compile, generate javadoc, create
+        binary/javadoc/source
+
+        ex :
+        1. To build this project :
+        $ ant clean archive or just ant
+    </description>
+
+    <!-- ==============================
+        Properties
+    ============================== -->
+    <property name="src.dir" location="src" description="Source dir"/>
+    <property name="test.src.dir" location="test" description="Test source dir"/>
+    <property name="build.dir" location="classes" description="Temporary dir for building"/>
+    <property name="dist.dir" location="dist" description="Built result"/>
+    <property name="java.source.version" value="1.7"/>
+    <property name="java.target.version" value="1.7"/>
+    <!-- read report jar file name from config.xml -->
+    <xmlproperty file="config.xml" keepRoot="false" semanticAttributes="true"/>
+
+    <ivy:settings file="ivysettings.xml" />
+
+    <path id="compile.classpath"/>
+    <path id="test.classpath"/>
+
+    <!-- ==============================
+        Targets
+    ============================== -->
+    <target name="init" description="Initialize build process">
+        <tstamp/>
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="resolve" description="Resolve classpath for source compilation">
+        <ivy:resolve type="jar,bundle" conf="build"/>
+        <ivy:cachepath pathid="compile.classpath"/>
+    </target>
+
+    <target name="compile" depends="init,resolve" description="Compile source">
+        <javac srcdir="${src.dir}" destdir="${build.dir}"
+                includeantruntime="false" debug="true" debuglevel="lines,source"
+                source="${java.source.version}"
+                target="${java.target.version}">
+            <classpath refid="compile.classpath"/>
+        </javac>
+    </target>
+
+    <target name="doc" description="Generate javadoc">
+        <javadoc sourcepath="${src.dir}" destdir="${dist.dir}/javadoc"/>
+    </target>
+
+    <target name="archive" depends="compile, doc"
+            description="Create jar files for binary/javadoc/source">
+        <jar jarfile="${dist.dir}/${JarFile}"
+                basedir="${build.dir}"/>
+        <jar jarfile="${dist.dir}/${ant.project.name}-javadoc.jar"
+                basedir="${dist.dir}/javadoc"/>
+        <zip destfile="${dist.dir}/${ant.project.name}.zip">
+            <zipfileset dir="${dist.dir}" prefix="${MenuCmd}" includes="${JarFile}"/>
+            <zipfileset dir="." prefix="${MenuCmd}" includes="config.xml, *.properties, *.conf, *.wm"/>
+            <zipfileset dir="images" prefix="${MenuCmd}/images" erroronmissingdir="false"/>
+            <zipfileset dir="jasper_template" prefix="${MenuCmd}/jasper_template" erroronmissingdir="fasle"/>
+        </zip>
+    </target>
+
+    <target name="clean" description="Clean all left over directories">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+</project>
