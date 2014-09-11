@@ -1,0 +1,60 @@
+
+## --------------------------------------------Webmacro--------------------------------------------------------
+#macro show_button() {
+    <div style="margin:1px">
+        <input type="reset" value="$PRB.getString("sample.report.button.reset")" />
+        <input type="submit" value="$PRB.getString("sample.report.button.save")" />
+    </div>
+}
+
+#macro show_user($ub,$isChecked,$checkAllName,$checkName){
+    #set $uKey = $ub.getKey()
+    #set $uName = $ub.getName()
+    #set $uId = $ub.getId()
+    
+    <tr class="$spn">
+	    <td align="left" width="20px">
+	        <input type="checkbox" name="$(checkName)" value="$uKey" onclick="cancelAllSelectX('report_form','$(checkAllName)','$(checkName)')" #if ($isChecked) {checked}>
+	    </td>
+	    <td align="left" style="padding:5px;">
+	    	$uId
+	    </td>
+	    <td align="left" style="padding:5px;">
+	    	$uName
+	    </td>
+    </tr>
+}
+## ----------------------------------------------- Main------------------------------------------------------------
+<div class="container">
+    <div class="my_title">
+    $PRB.getString("sample.report.user_proj_role"):$PRB.getString("sample.report.query.user")
+    </div>
+    <div class="settings">
+        <form name="report_form" action="$CHTTP/do_save_condition?report_key=$reportKey" method="post">
+        	#show_button()
+            <br />
+            <table class="topic_table" style="width:50%" cellspacing="1" cellpadding="0">
+	            <tr>
+		            <th width="20px">
+		                <input type="checkbox" name="check_all_select" id="check_all_select" value="" onclick="allSelectX('report_form','check_all_select','check_select')">    
+		            </th>
+		            <th>$PRB.getString("sample.report.user_id")</th>
+		            <th>$PRB.getString("sample.report.user_name")</th>
+		        </tr>
+		
+		        #alternate $spn through ["td_content1", "td_content2"]
+		        #foreach $user in $allUsers{
+		        	#if ($selectUsers.contains($user.getKey().toString())) {
+		        		#set $isChecked = true
+		        	}#else {
+		        		#set $isChecked = false
+		        	}
+		            
+		            #show_user($user, $isChecked, 'check_all_select', 'check_select')
+		        }
+            </table>
+            <br />
+            #show_button()
+        </form>
+    </div>
+</div>

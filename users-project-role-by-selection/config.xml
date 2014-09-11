@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PluginDetails>
+    <ParentMenu></ParentMenu>
+    <MenuCmd>SampleReport2</MenuCmd>
+    <MenuRoleID>usr</MenuRoleID>
+    <JarFile>SampleReport2.jar</JarFile>
+    <MainClass>tw.com.mt.cust.report.SampleReport2</MainClass>
+    <Requests>
+        <Request method="setupSampleReport">setup_sample_report</Request>
+        <Request method="doSaveCondition">do_save_condition</Request>
+        <Request method="showSampleReport">show_sample_report</Request>
+    </Requests>
+    <Messages>
+        <Message key="sample.report.user_proj_role">使用者參與專案一覽表</Message>
+        <Message key="sample.report.query.user">選擇使用者</Message>
+        <Message key="sample.report.user_id">使用者ID</Message>
+        <Message key="sample.report.user_name">姓名</Message>
+        <Message key="sample.report.proj_name">專案名稱</Message>
+        <Message key="sample.report.proj_owner">專案主持人</Message>
+        <Message key="sample.report.proj_role">團隊角色</Message>
+        <Message key="sample.report.proj_mgmt_team">管理人員</Message>
+        <Message key="sample.report.proj_work_team">工作人員</Message>
+        <Message key="sample.report.proj_guest_team">瀏覽者</Message>
+        <Message key="sample.report.button.reset">重設</Message>
+        <Message key="sample.report.button.save">儲存</Message>
+	</Messages>
+</PluginDetails>

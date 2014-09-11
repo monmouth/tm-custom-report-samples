@@ -1,0 +1,60 @@
+
+## --------------------------------------------Webmacro--------------------------------------------------------
+#macro show_button() {
+    <div style="margin:1px">
+    	<input type="button" onclick="history.back();" value="$RB.getString("button.back")">
+    </div>
+}
+##-----  Main   ---------------------------------------------------------------
+<div class="container">
+	<div class="my_title">$PRB.getString("sample.report.user_proj_role")</div>
+	<div class="settings">
+		<form>
+			#show_button()
+	        <br />		
+			<table class="topic_table" cellspacing="1" cellpadding="0" border="0" width="80%">
+		        <tr>
+		            ## User ID
+		            <th style="padding:5px;">$PRB.getString("sample.report.user_id")</th>
+		            ## User Name
+		            <th style="padding:5px;">$PRB.getString("sample.report.user_name")</th>
+		            ## Project Name
+		            <th style="padding:5px;">$PRB.getString("sample.report.proj_name")</th>
+		            ## Project Owner
+		            <th style="padding:5px;">$PRB.getString("sample.report.proj_owner")</th>
+		            ## Project Role
+		            <th style="padding:5px;">$PRB.getString("sample.report.proj_role")</th>
+		        </tr>
+		        #alternate $spn through ["td_content1", "td_content2"]
+		        #foreach $user in $allUsers {
+		        	#set $style = $spn
+		        	#set $userKey = $user.getKey()
+		        	#if ($userKeyToProjData.get($userKey) != null) {
+		        		#set $rows = $userKeyToProjData.get($userKey).size()
+		        		
+		        		#set $count = 0
+			        	#foreach $projData in $userKeyToProjData.get($userKey) {
+			        		<tr class="$style">
+					            #if ($count == 0) {
+					            	## User ID
+					                <td rowspan="$rows" align="left" valign="top" style="padding:5px;">$user.getId()</td>
+					                ## User Name
+					                <td rowspan="$rows" align="left" valign="top" style="padding:5px;">$user.getName()</td>
+					            }		            	
+				                ## Project Name
+				                <td align="left" valign="center" style="padding:5px;">$projData.getProjectName()</td>
+				                ## Project Owner
+				                <td align="center" valign="center" style="padding:5px;">$projData.getProjectOwnerName()</td>
+				                ## Project Role
+				                <td align="center" valign="center" style="padding:5px;">$projData.getProjRoleName()</td>
+				            </tr>
+				            #set $count = $count + 1
+				        }
+		        	}		        	
+		        }
+		    </table>
+	        <br />
+		    #show_button()
+		</form>
+	</div>
+</div>
